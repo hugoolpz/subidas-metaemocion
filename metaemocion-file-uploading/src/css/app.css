@@ -1,0 +1,9 @@
+/* app global css */
+.upload_card {
+  width: 100%;
+}
+
+.dialog_upload {
+  width: 100%;
+  max-width: 350px;
+}
