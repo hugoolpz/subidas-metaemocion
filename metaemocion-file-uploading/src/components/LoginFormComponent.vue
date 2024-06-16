@@ -86,6 +86,7 @@ async function iniciarSesion() {
         terminarCarga()
       } else if (datos.code === 404) {
         notificacion('El usuario no existe...', 'negative', 'close')
+        terminarCarga()
       } else {
         localStorage.clear()
         localStorage.setItem("token-privado", datos.token)

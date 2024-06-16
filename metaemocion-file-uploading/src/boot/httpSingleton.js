@@ -2,7 +2,7 @@ const ApiSingleton = (function () {
   let instance;
 
   function createInstance() {
-    const urlApi = "http://localhost:3000";
+    const urlApi = "http://51.92.30.55:3000";
 
     return {
       getUrlApi: function () {
