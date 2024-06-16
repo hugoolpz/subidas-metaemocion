@@ -3,9 +3,22 @@
     <q-card-section horizontal class="row">
       <div class="col-2 self-center text-center">
         <q-icon
-          :name="tipoArchivo === 'docs' ? 'description' : 'videocam'"
+          name="description"
           color="me-azul-oscuro"
           size="32px"
+          v-if="tipoArchivo === 'docs'"
+        />
+        <q-icon
+          name="videocam"
+          color="me-azul-oscuro"
+          size="32px"
+          v-if="tipoArchivo === 'vids'"
+        />
+        <q-icon
+          name="link"
+          color="me-azul-oscuro"
+          size="32px"
+          v-if="tipoArchivo === 'urls'"
         />
       </div>
 

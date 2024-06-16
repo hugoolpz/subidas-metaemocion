@@ -10,7 +10,10 @@ const storage = multer.diskStorage({
     cb(null, "public/");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    const originalName = Buffer.from(file.originalname, "latin1").toString(
+      "utf8"
+    );
+    cb(null, originalName);
   },
 });
 
@@ -37,10 +40,10 @@ router.put("/:filename", upload.single("file"), async (req, res) => {
   try {
     if (await fs.pathExists(oldFilePath)) {
       await fs.remove(oldFilePath);
-      res.status(200).send({ code: 200 });
     } else {
-      res.status(404).send({ code: 404 });
+      return res.status(404).send({ code: 404 });
     }
+    res.status(200).send({ code: 200 });
   } catch (error) {
     res.status(500).send({ code: 500, error });
   }

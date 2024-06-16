@@ -23,6 +23,7 @@
       >
         <q-tab label="Documentos" icon="description" name="docs" class="text-weight-bold"/>
         <q-tab label="Vídeos" icon="videocam" name="vids" class="text-weight-bold"/>
+        <q-tab label="Urls" icon="link" name="urls" class="text-weight-bold"/>
       </q-tabs>
     </q-header>
 

@@ -1,7 +1,7 @@
 <template>
-  <q-uploader :headers="headers" class="q-mt-lg" ref="archivo" :factory="tipoSubida === 'nueva' ? factoryFnPost : factoryFnPut" accept=".pdf, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .csv, .odt, .ods, .odp, .rtf, .txt, image/*, video/*, audio/*" color="me-azul-oscuro" field-name="file"
+  <q-uploader :headers="headers" multiple class="q-mt-lg" ref="archivo" :factory="tipoSubida === 'nueva' ? factoryFnPost : factoryFnPut" accept=".pdf, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .csv, .odt, .ods, .odp, .rtf, .txt, image/*, video/*, audio/*" color="me-azul-oscuro" field-name="file"
               label="Sube los archivos aquí"
-              style="width: 528px" @rejected="alRechazar" @uploaded="alSubir" @failed="alFallar">
+              @rejected="alRechazar" @uploaded="alSubir" @failed="alFallar" style="width: 30.8rem">
     <template v-slot:header="scope">
       <div class="row no-wrap items-center q-pa-sm q-gutter-xs">
         <q-btn v-if="scope.queuedFiles.length > 0" dense flat icon="clear_all"

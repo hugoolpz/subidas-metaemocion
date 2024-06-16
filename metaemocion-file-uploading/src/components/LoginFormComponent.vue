@@ -65,7 +65,7 @@ async function iniciarSesion() {
   correoErroneo.value = false
   contraErronea.value = false
   mostrarCarga()
-  fetch(`${urlApi}/users`, {
+  await fetch(`${urlApi}/users`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'

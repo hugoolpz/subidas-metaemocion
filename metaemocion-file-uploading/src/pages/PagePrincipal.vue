@@ -1,6 +1,6 @@
 <template>
   <q-tab-panels v-model="tabActual" animated>
-    <q-tab-panel name="docs" class="bg-white-1">
+    <q-tab-panel name="docs">
       <q-scroll-area style="height: 68vh;" class="column q-pa-md" :bar-style="estiloScroll" :thumb-style="estiloBarra">
         <div class="col q-gutter-y-lg">
           <upload-card-component tipo-archivo="docs" :nombre-archivo="archivo.name" v-for="archivo in archivos" :key="archivo" @al-editar="prepararEdicion(archivo.name)" @al-borrar="prepararBorrado(archivo.name)"></upload-card-component>
@@ -13,7 +13,7 @@
               size="md"
               color="me-azul-oscuro"
               icon="add"
-              label="Nuevo documento"
+              label="Nuevo"
               @click="abrirSubida = true"
           />
         </div>
@@ -33,7 +33,27 @@
             size="md"
             color="me-azul-oscuro"
             icon="add"
-            label="Nuevo vídeo"
+            label="Nuevo"
+            @click="abrirSubida = true"
+          />
+        </div>
+      </div>
+    </q-tab-panel>
+
+    <q-tab-panel name="urls">
+      <q-scroll-area style="height: 68vh;" class="column q-pa-md" :bar-style="estiloScroll" :thumb-style="estiloBarra">
+        <div class="col q-gutter-y-lg">
+          <upload-card-component tipo-archivo="urls" :nombre-archivo="archivo.name" v-for="archivo in archivos" :key="archivo" @al-editar="prepararEdicion(archivo.name)" @al-borrar="prepararBorrado(archivo.name)"></upload-card-component>
+        </div>
+      </q-scroll-area>
+
+      <div class="row justify-end q-pa-md">
+        <div>
+          <q-btn
+            size="md"
+            color="me-azul-oscuro"
+            icon="add"
+            label="Nuevo"
             @click="abrirSubida = true"
           />
         </div>
@@ -41,9 +61,9 @@
     </q-tab-panel>
   </q-tab-panels>
 
-  <dialog-upload-component v-model="abrirSubida" tipo-subida="nueva" @obtener-archivos="obtenerArchivos(tabActual)"></dialog-upload-component>
-  <dialog-upload-component v-model="abrirEdicion" :nombre-archivo-act="nombreArchivoAct" tipo-subida="edicion" @obtener-archivos="obtenerArchivos(tabActual);"></dialog-upload-component>
-  <dialog-delete-component v-model="abrirElim" :nombre-archivo-elim="nombreArchivoElim" @borrar-archivo="borrarArchivo(nombreArchivoElim)"></dialog-delete-component>
+  <dialog-upload-component v-model="abrirSubida" tipo-subida="nueva" @obtener-archivos="obtenerArchivos(tabActual)" @obtener-urls="obtenerUrls"></dialog-upload-component>
+  <dialog-upload-component v-model="abrirEdicion" :nombre-archivo-act="nombreArchivoAct" tipo-subida="edicion" @obtener-archivos="obtenerArchivos(tabActual)" @obtener-urls="obtenerUrls"></dialog-upload-component>
+  <dialog-delete-component v-model="abrirElim" :nombre-archivo-elim="nombreArchivoElim" @hacer-borrado="tabActual !== 'urls' ? borrarArchivo(nombreArchivoElim) : borrarUrl(nombreArchivoElim)"></dialog-delete-component>
 </template>
 
 <script setup>
@@ -130,6 +150,29 @@ async function obtenerArchivos(tipo) {
   terminarCarga()
 }
 
+async function obtenerUrls() {
+  mostrarCarga()
+  await fetch(`${urlApi}/urls`, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'token-privado': localStorage.getItem('token-privado')
+    },
+  })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+      if (datos.code === 500) {
+        notificacion('Hubo un error en el servidor...', 'negative', 'close')
+      } else {
+        archivos.value = []
+        archivos.value = datos.urls
+      }
+    })
+    .catch(err => {
+      notificacion('El servidor no esta disponible...', 'negative', 'close')
+    })
+  terminarCarga()
+}
 async function prepararEdicion(nombre) {
   nombreArchivoAct.value = nombre
   abrirEdicion.value = true
@@ -138,6 +181,7 @@ async function prepararEdicion(nombre) {
 async function prepararBorrado(nombre) {
   nombreArchivoElim.value = nombre
   abrirElim.value = true
+  console.log(nombreArchivoElim.value)
 }
 
 async function borrarArchivo(nombre) {
@@ -164,9 +208,35 @@ async function borrarArchivo(nombre) {
     })
 }
 
+async function borrarUrl(nombre) {
+  await fetch(`${urlApi}/urls/${nombre}`, {
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json',
+      'token-privado': window.localStorage.getItem('token-privado')
+    },
+  })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+      if (datos.code === 404) {
+        notificacion('Recurso no encontrado...', 'negative', 'close')
+      } else if (datos.code === 500) {
+        notificacion('Hubo un error en el servidor...', 'negative', 'close')
+      } else {
+        notificacion('Recurso borrado correctamente...', 'positive', 'check')
+        obtenerUrls()
+      }
+    })
+    .catch(err => {
+      notificacion('El servidor no esta disponible...', 'negative', 'close')
+    })
+}
+
 watch(tabActual, async (nuevo, viejo) => {
-  if (viejo !== nuevo) {
+  if (viejo !== nuevo && nuevo !== 'urls') {
     await obtenerArchivos(nuevo)
+  } else {
+    await obtenerUrls()
   }
 })
 
