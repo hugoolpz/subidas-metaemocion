@@ -5,7 +5,7 @@
         <div class="text-h6" v-if="tipoSubida === 'nueva'">Rellena el formulario para proceder con la subida</div>
         <div class="text-h6" v-else>Rellena el formulario para proceder con la edición</div>
         <q-space />
-        <q-btn icon="close" color="negative" round dense v-close-popup />
+        <q-btn icon="close" color="me-rojo-claro" round dense v-close-popup />
 
         <uploader-component :nombre-archivo-act="nombreArchivoAct" :tipo-subida="tipoSubida" @obtener-archivos="$emit('obtenerArchivos')"></uploader-component>
       </q-card-section>

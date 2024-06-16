@@ -4,7 +4,7 @@
       <div class="col-2 self-center text-center">
         <q-icon
           :name="tipoArchivo === 'docs' ? 'description' : 'videocam'"
-          color="primary"
+          color="me-azul-oscuro"
           size="32px"
         />
       </div>
@@ -20,7 +20,7 @@
           <div class="col">
             <q-btn round
                    size="md"
-                   color="positive"
+                   color="me-naranja"
                    icon="edit"
                    @click="$emit('alEditar')"
             />
@@ -28,7 +28,7 @@
           <div class="col">
             <q-btn round
                    size="md"
-                   color="negative"
+                   color="me-rojo-claro"
                    icon="delete"
                    @click="$emit('alBorrar')"
             />

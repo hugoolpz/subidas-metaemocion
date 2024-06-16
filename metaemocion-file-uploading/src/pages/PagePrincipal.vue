@@ -1,6 +1,6 @@
 <template>
   <q-tab-panels v-model="tabActual" animated>
-    <q-tab-panel name="docs">
+    <q-tab-panel name="docs" class="bg-white-1">
       <q-scroll-area style="height: 68vh;" class="column q-pa-md" :bar-style="estiloScroll" :thumb-style="estiloBarra">
         <div class="col q-gutter-y-lg">
           <upload-card-component tipo-archivo="docs" :nombre-archivo="archivo.name" v-for="archivo in archivos" :key="archivo" @al-editar="prepararEdicion(archivo.name)" @al-borrar="prepararBorrado(archivo.name)"></upload-card-component>
@@ -11,7 +11,7 @@
         <div>
           <q-btn
               size="md"
-              color="primary"
+              color="me-azul-oscuro"
               icon="add"
               label="Nuevo documento"
               @click="abrirSubida = true"
@@ -31,7 +31,7 @@
         <div>
           <q-btn
             size="md"
-            color="primary"
+            color="me-azul-oscuro"
             icon="add"
             label="Nuevo vídeo"
             @click="abrirSubida = true"
@@ -53,6 +53,7 @@ import {onMounted, ref, watch} from "vue";
 import {QSpinner, useQuasar} from "quasar";
 import api from "boot/httpSingleton";
 import DialogDeleteComponent from "components/DialogDeleteComponent.vue";
+import {useRouter} from "vue-router";
 
 const $q = useQuasar()
 const urlApi = api
@@ -63,29 +64,36 @@ const abrirElim = ref(false)
 const archivos = ref([])
 const nombreArchivoAct = ref('')
 const nombreArchivoElim = ref('')
+const router = useRouter()
 
 const estiloBarra = {
     borderRadius: '5px',
-    backgroundColor: '#027be3',
+    backgroundColor: '#0200DB',
     opacity: 0.75
 };
 
 const estiloScroll = {
     borderRadius: '9px',
-    backgroundColor: '#027be3',
+    backgroundColor: '#0200DB',
     opacity: 0.2
 }
 
 onMounted(async () => {
-  await obtenerArchivos(tabActual.value)
+  if (!localStorage.getItem('token-privado')) {
+    notificacion('Debes autenticarte...', 'negative', 'close')
+    await router.push({path: "/login"})
+  } else {
+    await obtenerArchivos(tabActual.value)
+  }
 })
 
 async function obtenerArchivos(tipo) {
   mostrarCarga()
-  await fetch(`${urlApi}`, {
+  await fetch(`${urlApi}/files`, {
     method: "GET",
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'token-privado': localStorage.getItem('token-privado')
     },
   })
     .then(respuesta => respuesta.json())
@@ -133,10 +141,11 @@ async function prepararBorrado(nombre) {
 }
 
 async function borrarArchivo(nombre) {
-  await fetch(`${urlApi}/${nombre}`, {
+  await fetch(`${urlApi}/files/${nombre}`, {
     method: "DELETE",
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'token-privado': window.localStorage.getItem('token-privado')
     },
   })
     .then(respuesta => respuesta.json())
@@ -176,8 +185,8 @@ function mostrarCarga() {
     spinner: QSpinner,
     spinnerColor: 'white',
     spinnerSize: 150,
-    backgroundColor: 'secondary',
-    message: 'Reuniendo archivos...',
+    backgroundColor: 'me-naranja',
+    message: 'Cargando...',
     messageColor: 'white'
   })
 }

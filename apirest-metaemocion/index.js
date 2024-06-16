@@ -1,15 +1,35 @@
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const fileRoutes = require("./routes/files");
+const userRoutes = require("./routes/users");
+const autenticarToken = require("./routes/auth");
 const app = express();
 const port = 3000;
+require("dotenv").config();
 
 app.use(cors());
 
 app.use(express.json());
-app.use("/files", fileRoutes);
+app.use("/files", autenticarToken, fileRoutes);
+app.use("/users", userRoutes);
 app.use("/public", express.static("public"));
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Servidor en puerto ${port}`);
 });
+
+const connectToMongo = async () => {
+  const { MONGO_USER, MONGO_PASS, MONGO_HOST, MONGO_DB } = process.env;
+  const mongoURL = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}/${MONGO_DB}?retryWrites=true&w=majority`;
+
+  try {
+    await mongoose.connect(mongoURL);
+    console.log("Éxito al conectar a Mongo");
+  } catch (error) {
+    console.error("Error al conectar a Mongo:", error);
+    process.exit(1);
+  }
+};
+
+connectToMongo();

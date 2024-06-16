@@ -6,8 +6,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancelar" color="positive" v-close-popup />
-        <q-btn flat label="Aceptar" color="negative" v-close-popup @click="$emit('borrarArchivo')" />
+        <q-btn flat label="Cancelar" color="me-naranja" v-close-popup />
+        <q-btn flat label="Aceptar" color="me-rojo-claro" v-close-popup @click="$emit('borrarArchivo')" />
       </q-card-actions>
     </q-card>
   </q-dialog>

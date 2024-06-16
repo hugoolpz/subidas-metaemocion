@@ -1,9 +1,120 @@
 /* app global css */
 .upload_card {
   width: 100%;
+  transition: all 0.4s ease-out;
+  cursor: pointer;
+}
+
+.login_form {
+  max-width: 550px;
+  width: 100%;
 }
 
 .dialog_upload {
   width: 100%;
   max-width: 350px;
 }
+
+.text-me-azul-claro {
+  color: #00E2FF !important;
+}
+.bg-me-azul-claro {
+  background: #00E2FF !important;
+}
+
+.text-me-azul {
+  color: #0077EE !important;
+}
+
+.bg-me-azul {
+  background: #0077EE !important;
+}
+
+.text-me-azul-oscuro {
+  color: #0200DB !important;
+}
+
+.bg-me-azul-oscuro {
+  background: #0200DB !important;
+}
+
+.text-me-morado {
+  color: #8B00C5 !important;
+}
+
+.bg-me-azul-morado {
+  background: #8B00C5 !important;
+}
+
+.text-me-rosa {
+  color: #FF007F !important;
+}
+
+.bg-me-rosa {
+  background: #FF007F !important;
+}
+
+.text-me-rojo-claro{
+  color: #E4004C !important;
+}
+
+.bg-me-rojo-claro {
+  background: #E4004C !important;
+}
+
+.text-me-naranja {
+  color: #FFA206 !important;
+}
+
+.bg-me-naranja {
+  background: #FFA206 !important;
+}
+
+.text-me-amarillo {
+  color: #FFFE00 !important;
+}
+
+.bg-me-amarillo {
+  background: #FFFE00 !important;
+}
+
+.text-me-negro {
+  color: #333434 !important;
+}
+
+.bg-me-negro {
+  background: #333434 !important;
+}
+
+.bg-me-gradiente {
+  background: #00E2FF;
+  background: -moz-linear-gradient(90deg, #00E2FF 10%, #0077EE 20%, #0200DB 30%, #8B00C5 40%, #FF007F 50%, #E4004C 60%, #FFA206 70%, #FFFE00 100%);
+  background: -webkit-linear-gradient(90deg, #00E2FF 10%, #0077EE 20%, #0200DB 30%, #8B00C5 40%, #FF007F 50%, #E4004C 60%, #FFA206 70%, #FFFE00 100%);
+  background: linear-gradient(90deg, #00E2FF 10%, #0077EE 20%, #0200DB 30%, #8B00C5 40%, #FF007F 50%, #E4004C 60%, #FFA206 70%, #FFFE00 100%);
+  background-size: 150% 120%;
+  animation: gradiante 10s ease infinite;
+}
+
+.upload_card:hover {
+  transform: translateY(-5px) scale(1.005) translateZ(0);
+  transition: all 0.4s ease-out;
+  /*box-shadow: #00E2FF 0 0 4px, #0077EE 0 0 6px, #0200DB 0 0 8px, #8B00C5 0 0 10px, #FF007F 0 0 12px, #E4004C 0 0 14px, #FFA206 0 0 16px, #FFFE00 0 0 18px;*/
+}
+
+.upload_card:active {
+  transform: scale(1) translateZ(0);
+  transition: all 0.3s ease-out;
+}
+
+@keyframes gradiante {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
